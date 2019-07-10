@@ -30,7 +30,7 @@ router.get('/', async(req, res) => {
 router.post('/register', async(req, res) => {
     let user = req.body
 
-    //Encrypst the password
+    //Encrypts the password
     const hash = bcrypt.hashSync(user.password, 10)
     user.password = hash
 
@@ -81,5 +81,11 @@ router.post('/login', async(req,res) => {
             res.status(500).json(err)
         })
 })
+
+// get route for user by id to show list of plants
+
+//protected route helper need to write
+
+//router.get('/users/')
 
 module.exports = router
