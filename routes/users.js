@@ -52,4 +52,34 @@ router.post('/register', async(req, res) => {
         })
 })
 
+//LOGIN post
+router.post('/login', async(req,res) => {
+    let {username, password} = req.body
+
+    //Looks to see if username matches database
+    Users.findBy({username})
+        .first()
+        .then(user => {
+            //Compares to see if password matches
+            if(user && bcrypt.compareSync(password, user.password)) {
+                //generates token
+                const token = generateToken(user)
+                //gets the user ID
+                let decoded = jwt.decode(token)
+
+                res.status(200).json({
+                    message: `Welcome back ${user.username}`,
+                    token: token,
+                    id: decoded.id
+                }) 
+            } else {
+                //If username or password incorrect, returns message
+                res.status(500).json({message: "Sorry, username or password does not match. Try again."})
+            }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
 module.exports = router
