@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
       table.increments();
       table.string("name", 255).notNullable();
       table.text("description");
-      tbl.date('last_water');
+      table.date('last_water');
       table.integer("userId")
         .references('id')
         .inTable('users')
