@@ -1,0 +1,22 @@
+{
+  "name": "build-water-plants-BE",
+  "version": "1.0.0",
+  "description": "build week water my plants app",
+  "main": "index.js",
+  "repository": "https://bykristea@github.com/water-our-plants/build-water-plants-BE.git",
+  "author": "Kristea and Miguel",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.18.3",
+    "sqlite3": "^4.0.9"
+  },
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
+  }
+}
