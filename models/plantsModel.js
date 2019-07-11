@@ -8,7 +8,7 @@ module.exports = {
 }
 
 function get() {
-    return db('users')
+    return db('plants')
 }
 
 async function add(plant){
