@@ -4,6 +4,8 @@ const router = express.Router()
 const bcrypt = require('bcryptjs')
 const jwt = require("jsonwebtoken")
 const secrets = require('../config/secrets.js')
+const db = require('../config/dbConfig.js')
+const Plants = require('../models/plantsModel.js')
 
 function generateToken(user) {
     const payload = {
@@ -83,6 +85,37 @@ router.post('/login', async(req,res) => {
 })
 
 // get route for user by id to show list of plants
+router.get('/getPlants/:id', async(req, res) => {
+    let {id} = req.params
+
+    await db('plants')
+        .then(allPlants => {
+            const filtered = allPlants.filter(myPlants => {
+                return myPlants.userId == id
+            })
+            res.status(200).json(filtered)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
+// post route for creating plants
+router.post('/addPlants/:id', async(req, res) => {
+    let{id} = req.params
+    let bod = req.body
+
+    let plant = {...bod, userId: id}
+        Plants.add(plant)
+   
+            .then(newPlant => {
+                res.status(200).json(newPlant)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
+})
+
 
 //protected route helper need to write
 
