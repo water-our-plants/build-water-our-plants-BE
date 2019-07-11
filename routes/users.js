@@ -119,11 +119,22 @@ router.post('/addPlants/:id', async(req, res) => {
 
 // PUT route to edit plants
 
-// router.put('/editPlants/:id', async(req, res) => {
-//     const id = req.params.id;
+router.put('/editPlants/:id', async(req, res) => {
 
-//     res.status(200).json({})
-// })
+    try {
+        const user = await Plants.update(req.params.id, req.body)
+
+        if(user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({message: 'The plant could not be found'}) 
+        }
+    } catch(err) {
+        res.status(500).json({
+            message: 'Error updating the plant'
+        })       
+    }
+})
 
 //DELETE route for plants
 
