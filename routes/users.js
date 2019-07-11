@@ -117,6 +117,22 @@ router.post('/addPlants/:id', async(req, res) => {
 })
 
 
+// PUT route to edit plants
+
+// router.put('/editPlants/:id', async(req, res) => {
+//     const id = req.params.id;
+
+//     res.status(200).json({})
+// })
+
+//DELETE route for plants
+
+router.delete('/deletePlant/:id', async(req, res) => {
+    const {id} = req.params
+
+    const removePlant = await Plants.remove(id)
+    res.status(200).json(removePlant)
+})
 //protected route helper need to write
 
 //router.get('/users/')
