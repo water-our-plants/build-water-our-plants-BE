@@ -9,12 +9,12 @@ exports.seed = function(knex) {
         {id: 1, 
         username: 'kgamel', 
         password: 'admin12', 
-        email: 'krgamel@gmail.com', phoneNumber: '2546247290'},
+       phoneNumber: '2546247290'},
         
         {id: 2, 
         username: 'mdiaz', 
         password: 'admin1', 
-        email: 'diaz4674@gmail.com', phoneNumber: '2546247290'}
+        phoneNumber: '2546247290'}
       ]);
     });
 };
