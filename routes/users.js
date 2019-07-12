@@ -7,6 +7,23 @@ const secrets = require('../config/secrets.js')
 const db = require('../config/dbConfig.js')
 const Plants = require('../models/plantsModel.js')
 
+//protected route helper need to write
+
+const protectedRoute = (req, res, next) => {
+    const token = req.headers.authorization
+    console.log(token)
+    jwt.verify(token, secrets.jwt, (err, decoded) => {
+        console.log("passed the middleware test")
+        if(err){
+            return res.status(500).send({message: "The token could not be verified"})
+        }
+        req.id = decoded.id
+        console.log(req.id, "this user's id")
+        next()
+    })
+}
+
+//Generates the Token
 function generateToken(user) {
     const payload = {
       id: user.id
@@ -59,11 +76,11 @@ router.post('/login', async(req,res) => {
     let {username, password} = req.body
 
     //Looks to see if username matches database
-    Users.findBy({username})
+    await Users.findBy({username})
         .first()
         .then(user => {
             //Compares to see if password matches
-            if(user.username && bcrypt.compareSync(password, user.password)) {
+            if(user && bcrypt.compareSync(password, user.password)) {
             
                 //generates token
                 const token = generateToken(user)
@@ -98,7 +115,7 @@ router.get('/getAllUsers', async(req, res) => {
 })
 
 // get route for user by id to show list of plants
-router.get('/getPlants/:id', async(req, res) => {
+router.get('/getPlants/:id', protectedRoute, async(req, res) => {
     let {id} = req.params
 
     await db('plants')
@@ -157,10 +174,10 @@ router.delete('/deletePlant/:id', async(req, res) => {
     const removePlant = await Plants.remove(id)
     res.status(200).json(removePlant)
 })
-//protected route helper need to write
-
 
 
 //router.get('/users/')
+
+
 
 module.exports = router
