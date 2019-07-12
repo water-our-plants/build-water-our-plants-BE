@@ -84,6 +84,18 @@ router.post('/login', async(req,res) => {
         })
 })
 
+//get route for users
+router.get('/getAllUsers', async(req, res) => {
+
+    await Users.get()
+        .then(allUsers => {
+            res.status(200).json(allUsers)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
 // get route for user by id to show list of plants
 router.get('/getPlants/:id', async(req, res) => {
     let {id} = req.params
@@ -145,6 +157,8 @@ router.delete('/deletePlant/:id', async(req, res) => {
     res.status(200).json(removePlant)
 })
 //protected route helper need to write
+
+
 
 //router.get('/users/')
 
