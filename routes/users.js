@@ -63,7 +63,8 @@ router.post('/login', async(req,res) => {
         .first()
         .then(user => {
             //Compares to see if password matches
-            if(user && bcrypt.compareSync(password, user.password)) {
+            if(user.username && bcrypt.compareSync(password, user.password)) {
+            
                 //generates token
                 const token = generateToken(user)
                 //gets the user ID
@@ -78,6 +79,18 @@ router.post('/login', async(req,res) => {
                 //If username or password incorrect, returns message
                 res.status(500).json({message: "Sorry, username or password does not match. Try again."})
             }
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
+
+//get route for users
+router.get('/getAllUsers', async(req, res) => {
+
+    await Users.get()
+        .then(allUsers => {
+            res.status(200).json(allUsers)
         })
         .catch(err => {
             res.status(500).json(err)
@@ -117,7 +130,36 @@ router.post('/addPlants/:id', async(req, res) => {
 })
 
 
+// PUT route to edit plants
+
+router.put('/editPlants/:id', async(req, res) => {
+
+    try {
+        const user = await Plants.update(req.params.id, req.body)
+
+        if(user) {
+            res.status(200).json(user)
+        } else {
+            res.status(404).json({message: 'The plant could not be found'}) 
+        }
+    } catch(err) {
+        res.status(500).json({
+            message: 'Error updating the plant'
+        })       
+    }
+})
+
+//DELETE route for plants
+
+router.delete('/deletePlant/:id', async(req, res) => {
+    const {id} = req.params
+
+    const removePlant = await Plants.remove(id)
+    res.status(200).json(removePlant)
+})
 //protected route helper need to write
+
+
 
 //router.get('/users/')
 
