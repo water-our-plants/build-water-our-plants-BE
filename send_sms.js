@@ -10,13 +10,17 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 // require the Twilio module and create a REST client
 const client = require('twilio')(accountSid, authToken);
 
-client.messages.create(
-  {
-    to: '+12546247290',
-    from: '+12542771304',
-    body: 'This testing twilio!',
-  },
-  (err, message) => {
-    console.log(message.sid);
+module.exports = {
+  sendMessage: notification => {
+    client.messages
+    .create({
+      body: `Hi ${notification.username}! 🌿 Today you should Water  your (${notification.name}) plant 🌱.`,
+
+    from: process.env.TWILIO_NUMBER,
+    to: notification.phoneNumber
+    })
+
+    .then(message => console.log(message))
+    .catch(err => console.error(err));
   }
-);
+};
