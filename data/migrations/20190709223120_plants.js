@@ -4,7 +4,6 @@ exports.up = function(knex, Promise) {
       table.string('name', 255).notNullable();
       table.text('description', 255);
       table.date('lastWater');
-      table.date('nextWater');
       table.integer('userId')
         .references('id')
         .inTable('users')
