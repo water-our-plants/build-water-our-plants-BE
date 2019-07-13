@@ -25,6 +25,9 @@ router.get('/getWaterDay/:id', async(req, res) => {
         })
 })
   
+
+//add a new water day notification
+//requires watering_time, plant_id, userId
   router.post('/addWaterDay', (req, res) => {
     console.log('\n REQ BODY', req.body);
     if (Array.isArray(req.body)) {
@@ -49,6 +52,49 @@ router.get('/getWaterDay/:id', async(req, res) => {
     }
   });
   
+  // edit a water Day
+  //requires watering_time, plant_id and userID
   
+  router.put('/editWaterDay/:id', (req, res) => {
+    const { id } = req.params;
+    const { watering_time,  plant_id, userId } = req.body;
+  
+    db('watering')
+      .where({ id: id })
+      .update({ watering_time,  plant_id, userId  })
+      .returning('*')
+      .then(water => {
+        if (water) {
+          res.status(200).json(water);
+        } else if (!water) {
+          res
+            .status(404)
+            .json({ message: "There isn't anyhting to update" });
+        }
+      })
+      .catch(() => res.status(500).json({ message: 'server error' }));
+  });
+
+  //delete a water day requires wateringid
+  router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    db('watering')
+      .where({ id: id })
+      .del()
+      .then(water => {
+        if (!water) {
+          res.status(400).json({
+            message:
+              'There are no water days to delete corresponding with that id.',
+          });
+        } else {
+          res
+            .status(200)
+            .json({ message: 'The water day was successfully deleted.' });
+        }
+      })
+      .catch(() => res.status(500).json({ message: 'server error' }));
+  });
+
 
 module.exports = router;
