@@ -9,21 +9,21 @@ router.get('/', async (req, res) => {
     res.status(200).json(watering);
 });
 
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    db('watering')
-      .where({ userId: id })
-      .then(water => {
-        if (water.trim().length === 0) {
-          res.status(400).json({
-            message: 'There are no watering reminders for you.',
-          });
-        } else {
-          res.status(200).json(notification);
-        }
-      })
-      .catch(err => res.status(500).json(err));
-  });
+// get all notifications for a user at userId
+router.get('/getWaterDay/:id', async(req, res) => {
+    let {id} = req.params
+
+    await db('watering')
+        .then(waterDay => {
+            const filtered = waterDay.filter(myWater => {
+                return myWater.userId == id
+            })
+            res.status(200).json(filtered)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+})
   
   router.post('/addWaterDay', (req, res) => {
     console.log('\n REQ BODY', req.body);
