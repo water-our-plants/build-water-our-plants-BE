@@ -3,21 +3,18 @@
 require("dotenv").config();
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
-
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-
 // require the Twilio module and create a REST client
 const client = require('twilio')(accountSid, authToken);
 
 module.exports = {
-  sendMessage: notification => {
+  sendMessage: waterDay => {
     client.messages
     .create({
-      body: `Hi ${notification.username}! 🌿 Today you should Water  your (${notification.name}) plant 🌱.`,
+      body: `Hi ${waterDay.username}! 🌿 Today you should Water  your (${waterDay.name}) plant 🌱.`,
 
     from: process.env.TWILIO_NUMBER,
-    to: notification.phoneNumber
+    to: waterDay.phoneNumber
     })
 
     .then(message => console.log(message))
