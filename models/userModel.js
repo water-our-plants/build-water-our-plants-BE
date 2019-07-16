@@ -4,7 +4,8 @@ module.exports = {
     get,
     add,
     findBy,
-    findById
+    findById,
+    update
 }
 
 function get() {
@@ -14,6 +15,10 @@ function get() {
 async function add(user){
     const [id] = await db('users').insert(user)
     return findById(id)
+}
+
+async function update(id, changes) {
+    return db('users').where({id}).update(changes)
 }
 
 function findBy(filter) {
