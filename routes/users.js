@@ -131,7 +131,7 @@ router.get('/getPlants/:id', protectedRoute, async(req, res) => {
 })
 
 // post route for creating plants
-router.post('/addPlants/:id', async(req, res) => {
+router.post('/addPlants/:id', protectedRoute, async(req, res) => {
     let{id} = req.params
     let bod = req.body
 
