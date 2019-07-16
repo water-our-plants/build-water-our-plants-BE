@@ -157,8 +157,18 @@ router.post('/addPlants/:id', protectedRoute, async(req, res) => {
     let plant = {...bod, userId: id}
         Plants.add(plant)
    
-            .then(newPlant => {
-                res.status(200).json(newPlant)
+            .then(async(newPlant) => {
+               const maPlants = await db('plants')        
+                        .then(allPlants => {
+                            const filtered = allPlants.filter(myPlants => {
+                                return myPlants.userId == id
+                            })
+                            res.status(200).json(filtered)
+                        })
+                        .catch(err => {
+                            res.status(500).json(err)
+                        })
+                res.status(200).json(maPlants)
             })
             .catch(err => {
                 res.status(500).json(err)
