@@ -1,17 +1,17 @@
 const cron = require('node-cron');
 const { sendMessage } = require('./send_sms.js');
-const moment = require('moment');
+
 
 const db = require('../config/dbConfig.js');
 
 
 const smsWorker = cron.schedule(
-    '0 * * * *',
+    '0 18 * * *',
     () => {
       console.log("scheduler running");
       db("plants as p")
         .join("users as u", "u.id", "p.userId")
-        .where({ smsDelivered: false })
+        .where({ smsDelivered: 0 })
     
         .select(
           "p.id",
@@ -28,14 +28,14 @@ const smsWorker = cron.schedule(
               sendMessage(notification);
               db("plants")
                 .where({ id: plants.id })
-                .update({ smsDelivered: true })
+                .update({ smsDelivered: 1 })
                 .then(updated => console.log("\nUPDATED", updated));
             });
           }
         });
     },
     {
-      scheduled: false
+      scheduled: 0
     }
   );
   

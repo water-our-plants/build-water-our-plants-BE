@@ -24,7 +24,7 @@ exports.seed = function(knex) {
             name: 'Parlor Palm', 
             description: 'plant in living room', 
             watering_time: "2019-07-17",
-            // smsDelivered: "0",
+            smsDelivered: "0",
             lastWater: "2019-07-11" },
 
           {userId: 1, 
