@@ -199,10 +199,28 @@ router.put('/editPlants/:id', async(req, res) => {
 
 router.delete('/deletePlant/:id', async(req, res) => {
     const {id} = req.params
+    const userId = req.body.userId
 
-    const removePlant = await Plants.remove(id)
-    res.status(200).json(removePlant)
+
+    Plants.remove(id)
+        .then(async(newPlants) => {
+            const maPlants = await db('plants')  
+                        .then(allPlants => {
+                            const filtered = allPlants.filter(myPlants => {
+                                return myPlants.userId == userId
+                            })
+                            res.status(200).json(filtered)
+                        })
+                        .catch(err => {
+                            res.status(500).json(err)
+                        })  
+            res.status(200).json(maPlants)      
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
 })
+
 
 
 //router.get('/users/')
