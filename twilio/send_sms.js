@@ -11,7 +11,7 @@ module.exports = {
   sendMessage: waterDay => {
     client.messages
     .create({
-      body: `Hi ${waterDay.username}! 🌿 Today you should Water  your (${waterDay.name}) plant 🌱.`,
+      body: `Hi ${waterDay.username}! 🌿 Today you should water your ${waterDay.name} plant 🌱.`,
 
     from: process.env.TWILIO_NUMBER,
     to: waterDay.phoneNumber
