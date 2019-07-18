@@ -6,20 +6,20 @@ const db = require('../config/dbConfig.js');
 
 
 const smsWorker = cron.schedule(
-    '*/5 * * * *',
+    '0 * * * *',
     () => {
       console.log("scheduler running");
       db("plants as p")
         .join("users as u", "u.id", "p.userId")
-        .where({ smsDelivered: 0 })
+        .where({ smsDelivered:'0' })
     
         .select(
           "p.id",
           "u.username",
           "p.name",
-          "p.description",
           "p.watering_time",
-          "u.phoneNumber"
+          "u.phoneNumber",
+          "p.smsDelivered"
         )
         .then(plants => {
           console.log("\n NOTIFICATIONS", plants);
@@ -28,14 +28,14 @@ const smsWorker = cron.schedule(
               sendMessage(notification);
               db("plants")
                 .where({ id: plants.id })
-                .update({ smsDelivered: 1 })
+                .update({ smsDelivered: '1' })
                 .then(updated => console.log("\nUPDATED", updated));
             });
           }
         });
     },
     {
-      scheduled: 0
+      scheduled: false
     }
   );
   
