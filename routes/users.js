@@ -11,14 +11,12 @@ const Plants = require('../models/plantsModel.js')
 
 const protectedRoute = (req, res, next) => {
     const token = req.headers.authorization
-    console.log(token)
+
     jwt.verify(token, secrets.jwt, (err, decoded) => {
-        console.log("passed the middleware test")
         if(err){
             return res.status(500).send({message: "The token could not be verified"})
         }
         req.id = decoded.id
-        console.log(req.id, "this user's id")
         next()
     })
 }
@@ -72,7 +70,7 @@ router.post('/register', async(req, res) => {
 })
 
 //LOGIN post
-router.post('/login', async(req,res) => {
+router.post('/login', protectedRoute, async(req,res) => {
     let {username, password} = req.body
 
     //Looks to see if username matches database
@@ -112,7 +110,7 @@ router.put('/editUser/:id', protectedRoute, async(req, res) => {
         const user = await Users.update(req.params.id, req.body)
 
         if(user) {
-            res.status(200).json(user)
+            res.status(200).json({ message: 'successfully made changes'})
         } else {
             res.status(404).json({message: 'The user could not be found'}) 
         }
@@ -180,7 +178,7 @@ router.post('/addPlants/:id', protectedRoute, async(req, res) => {
 
 // PUT route to edit plants
 
-router.put('/editPlants/:id', async(req, res) => {
+router.put('/editPlants/:id', protectedRoute, async(req, res) => {
 
     try {
         const user = await Plants.update(req.params.id, req.body)
