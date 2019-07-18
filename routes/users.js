@@ -90,7 +90,9 @@ router.post('/login', async(req,res) => {
                 res.status(200).json({
                     message: `Welcome back ${user.username}`,
                     token: token,
-                    id: decoded.id
+                    id: decoded.id,
+                    phoneNumber: user.phoneNumber,
+                    username: user.username
                 }) 
             } else {
                 //If username or password incorrect, returns message
