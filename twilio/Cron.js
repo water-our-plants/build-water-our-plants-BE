@@ -6,7 +6,7 @@ const db = require('../config/dbConfig.js');
 
 
 const smsWorker = cron.schedule(
-    '*/10 * * * *',
+    '0 18 * * *',
     () => {
       console.log("scheduler running");
       db("plants as p")
