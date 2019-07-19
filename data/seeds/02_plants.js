@@ -31,14 +31,14 @@ exports.seed = function(knex) {
             name: 'Pothos', 
             description: 'entry way',
             watering_time: "2019-07-19",
-            smsDelivered: "1", 
+            smsDelivered: 1, 
             lastWater: "2019-07-13" },
 
           {userId: 1, 
             name: 'Fiddle Leaf Fig', 
             description: 'plant in living room', 
             watering_time: "2019-07-19",
-            smsDelivered: "1",
+            smsDelivered: 1,
             lastWater: "2019-07-08" }
         
       ]);
