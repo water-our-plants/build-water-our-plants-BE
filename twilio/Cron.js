@@ -6,15 +6,15 @@ const db = require('../config/dbConfig.js');
 
 
 const smsWorker = cron.schedule(
-    '0 18 * * *',
+    '0 9 * * *',
     () => {
       console.log("scheduler running");
       db("plants as p")
         .join("users as u", "u.id", "p.userId")
         .where({smsDelivered: false})
-        .andWhere('watering_time', [
-            moment().format()
-        ])
+        // .andWhere('watering_time', [
+        //     moment().format()
+        // ])
     
         .select(
           "p.id",
